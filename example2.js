@@ -7,6 +7,7 @@ async function main() {
 
   const nightmare = Nightmare({ show: true })
 
+  let index = 0;
 
   await nightmare.goto('https://www.indeed.com/')
   await nightmare.type( '#text-input-what', 'Medical Biller')
@@ -24,17 +25,18 @@ async function main() {
   await nightmare.type('#text-input-where', 'United States')
   await nightmare.click('.icl-WhatWhere-button')
   await nightmare.wait('.clickcard > a')
-  let role = await nightmare.evaluate(() => document.querySelector('.clickcard > a').innerText);
-  let company = await nightmare.evaluate(() => document.querySelector('span.company').innerText);
-  let location = await nightmare.evaluate(() => document.querySelector('.location').innerText);
-  let joblink = await nightmare.evaluate(() => document.querySelector('.clickcard > a').href);
 
-  let clickcards = await nightmare.evaluate(() => document.querySelectorAll('.clickcard'));
-  await nightmare.then(console.log(clickcards));
+  let totalcards = await nightmare.evaluate(() => document.querySelectorAll('.clickcard').length);
+  await nightmare.then(console.log(totalcards));
+
+  let clickcard1 = await nightmare.evaluate(() => document.querySelectorAll('.clickcard > a')[1].innerText);
+  let company1 = await nightmare.evaluate(() => document.querySelectorAll('span.company')[1].innerText);
+  let location1 = await nightmare.evaluate(() => document.querySelectorAll('.location')[1].innerText);
+  let link1 = await nightmare.evaluate(() => document.querySelectorAll('.clickcard >a')[1].href);
+  await nightmare.then(console.log(clickcard1, company1, location1, link1));
 
 
   await nightmare.end()
-  await nightmare.then(console.log(role, company, location, joblink))
   await nightmare.catch(error => {
     console.error('Search failed:', error)
   })
