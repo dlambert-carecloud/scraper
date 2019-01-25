@@ -7,7 +7,8 @@ async function main() {
 
   const nightmare = Nightmare({ show: true })
 
-  let index = 0;
+  maxpage = 15;
+  currentPage = 0;
 
   await nightmare.goto('https://www.indeed.com/')
   await nightmare.type( '#text-input-what', 'Medical Biller')
@@ -26,14 +27,20 @@ async function main() {
   await nightmare.click('.icl-WhatWhere-button')
   await nightmare.wait('.clickcard > a')
 
-  let totalcards = await nightmare.evaluate(() => document.querySelectorAll('.clickcard').length);
-  await nightmare.then(console.log(totalcards));
+  while (currentPage < maxpage) {
+    // let totalcards = await nightmare.evaluate(() => document.querySelectorAll('.clickcard').length);
+    // await nightmare.then(console.log(totalcards));
+    let clickcard1 = await nightmare.evaluate(() => document.querySelectorAll('.clickcard > a')[1].innerText);
+    let company1 = await nightmare.evaluate(() => document.querySelectorAll('span.company')[1].innerText);
+    let location1 = await nightmare.evaluate(() => document.querySelectorAll('.location')[1].innerText);
+    let link1 = await nightmare.evaluate(() => document.querySelectorAll('.clickcard >a')[1].href);
+    await nightmare.then(console.log(clickcard1, company1, location1, link1));
+    await nightmare.click('.np');
+    await nightmare.wait('.clickcard > a');
+    await nightmare.wait(2000);
 
-  let clickcard1 = await nightmare.evaluate(() => document.querySelectorAll('.clickcard > a')[1].innerText);
-  let company1 = await nightmare.evaluate(() => document.querySelectorAll('span.company')[1].innerText);
-  let location1 = await nightmare.evaluate(() => document.querySelectorAll('.location')[1].innerText);
-  let link1 = await nightmare.evaluate(() => document.querySelectorAll('.clickcard >a')[1].href);
-  await nightmare.then(console.log(clickcard1, company1, location1, link1));
+    currentPage++;
+}
 
 
   await nightmare.end()

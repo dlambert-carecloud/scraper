@@ -9,6 +9,7 @@
   "author": "Daniel Lambert",
   "license": "ISC",
   "dependencies": {
-    "nightmare": "^3.0.1"
+    "nightmare": "^3.0.1",
+    "vo": "^4.0.2"
   }
 }
